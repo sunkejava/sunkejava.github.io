@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=http://outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="sunkejava" />
+
+
+
+<meta name="description" content="本文只是给类似我这样的git新人做参考，对git比较熟悉的话可以无视了。由于自身对git的了解就不是特别深，所以可能有些地方会有错误，欢迎各位指正。ps：建议git相关操作都在bash上进行操作。不依赖windows下gui。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用git解决hexo博客多PC间同步问题">
+<meta property="og:url" content="http://www.sunkejava.com/2016/08/10/hexo-sync-in-multiple-pc/index.html">
+<meta property="og:site_name" content="Sunkejava&#39;s blog">
+<meta property="og:description" content="本文只是给类似我这样的git新人做参考，对git比较熟悉的话可以无视了。由于自身对git的了解就不是特别深，所以可能有些地方会有错误，欢迎各位指正。ps：建议git相关操作都在bash上进行操作。不依赖windows下gui。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-08-10T02:57:47.000Z">
+<meta property="article:modified_time" content="2016-08-10T03:50:56.450Z">
+<meta property="article:author" content="sunkejava">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="同步">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Sunkejava&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>利用git解决hexo博客多PC间同步问题 | Sunkejava&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/FrontEndGuide/H1/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/about">关于作者</a></li>
+                        
+                            <li><a href="/FrontEndGuide/V1/">地址导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="/declineaberdeen@foxmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" rel="noopener" href="http://weibo.com/declineaberdeen" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/sunkejava" title="GitHub"></a>
+                            
+                                <a class="fa 知乎" target="_blank" rel="noopener" href="https://www.zhihu.com/people/sunke-28" title="知乎"></a>
+                            
+                                <a class="fa 博客园" target="_blank" rel="noopener" href="http://www.cnblogs.com/decline/" title="博客园"></a>
+                            
+                                <a class="fa CSDN" target="_blank" rel="noopener" href="http://my.csdn.net/sunke_java" title="CSDN"></a>
+                            
+                                <a class="fa Coding" target="_blank" rel="noopener" href="https://coding.net/u/sunkejava" title="Coding"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" rel="noopener" href="http://music.163.com/#/user/home?id=317483295" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" href="/1577972070" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="/meiyou-mianbaode-ai" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/" rel="tag">.net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hello-World/" rel="tag">Hello World</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Test/" rel="tag">Test</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XPsp3/" rel="tag">XPsp3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/error/" rel="tag">error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/" rel="tag">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%AD%A5/" rel="tag">同步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87/" rel="tag">图片</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1/" rel="tag">微信</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://xuea.github.io/">xuea</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://luuman.github.io/">世平阜康</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://MOxFIVE.github.io/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://www.vsay.cn/">DoubleV</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://www.ccwebsite.com/">兮兮</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://blog.dandyweng.com/">翁天信</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://www.plqblog.com/views/index.php">潘利强</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://www.hankin.cn/">hankin</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="http://blog.waydrow.com/">waydrow</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">屌丝一枚、爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/FrontEndGuide/H1/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/about">关于作者</a></li>
+                
+                    <li><a href="/FrontEndGuide/V1/">地址导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="/declineaberdeen@foxmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="http://weibo.com/declineaberdeen" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/sunkejava" title="GitHub"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="https://www.zhihu.com/people/sunke-28" title="知乎"></a>
+                            
+                                <a class="fa 博客园" target="_blank" href="http://www.cnblogs.com/decline/" title="博客园"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://my.csdn.net/sunke_java" title="CSDN"></a>
+                            
+                                <a class="fa Coding" target="_blank" href="https://coding.net/u/sunkejava" title="Coding"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=317483295" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="/1577972070" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="/meiyou-mianbaode-ai" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-hexo-sync-in-multiple-pc" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/10/hexo-sync-in-multiple-pc/" class="article-date">
+      <time datetime="2016-08-10T02:57:47.000Z" itemprop="datePublished">2016-08-10</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      利用git解决hexo博客多PC间同步问题
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%90%8C%E6%AD%A5/" rel="tag">同步</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <span id="more"></span>
+
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>单位和家里两PC，同时都想更新blog。而由于hexo没有后台，而且全部文件都在本地生成，所以如果公司电脑上发表了A文章后回家又写了篇B文章，在家里上传后你会发现只有B文章而A文章没了（因为家里的PC上没有A文章的md文件），所以多台电脑同时用来写文章的时候，需要解决备份问题。</p>
+<p>而常用的备份方案无非两种：</p>
+<h3 id="百度云，Dropbox等网盘云备份"><a href="#百度云，Dropbox等网盘云备份" class="headerlink" title="百度云，Dropbox等网盘云备份"></a>百度云，Dropbox等网盘云备份</h3><p>（不清楚Dropbox，仅以百度云为例）</p>
+<p>优点：免费且操作简单<br>不足：备份后同步比较麻烦，每次另一台电脑上都需要手动下载备份文件夹手动覆盖。<br>开启云端自动备份的时候，写blog的过程中如果保存了文件，会触发百度云的上传，而上传过程中产生的xxx.cfg文件会让hexo解析失败，导致hexo s生成的本地服务器进程停止，不方便边写边预览<br>因此此方案作废。</p>
+<h3 id="利用第三方的git服务备份"><a href="#利用第三方的git服务备份" class="headerlink" title="利用第三方的git服务备份"></a>利用第三方的git服务备份</h3><p>优点：部署完成后更新方便，hexo 更新完后只需要再更新全站到git即可<br>缺点：部署过程相对比较麻烦，对新手不友好（其实是由于对git的理解不深导致的）</p>
+<h3 id="国内外现在知名的git服务提供商主要有："><a href="#国内外现在知名的git服务提供商主要有：" class="headerlink" title="国内外现在知名的git服务提供商主要有："></a>国内外现在知名的git服务提供商主要有：</h3><p><a target="_blank" rel="noopener" href="https://github.com/">github</a>、<a target="_blank" rel="noopener" href="https://coding.net/gitcafe.html">gitcafe</a>、<a target="_blank" rel="noopener" href="https://bitbucket.org/">bitbucket</a>、<a target="_blank" rel="noopener" href="http://www.oschina.net/">oschina</a>、<a target="_blank" rel="noopener" href="https://coding.net/">coding</a>等，不过gitcafe好像跟coding合并了。</p>
+<p>由于blog文件夹里有些插件配置文件会涉及比较敏感的隐私数据（云服务商的appsecret key之类的），所以建议放私有仓库（当然也可以把配置文件单独拿出来然后其余的全部扔到git的公众仓库，这个看人，本文重点也不在于git服务商的选择或者公有私有库之争）<br>上面提及的5家服务商里，<a target="_blank" rel="noopener" href="https://github.com/">github</a>、<a target="_blank" rel="noopener" href="https://coding.net/gitcafe.html">gitcafe</a>的私有库是收费的，而另外三家的私有库目前免费。各位可以自行选择，我个人选择了<a target="_blank" rel="noopener" href="http://www.oschina.net/">oschina</a>，免费嘛，谁都喜欢！</p>
+<h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><p>git多网站多账户部署过程可以参考<a target="_blank" rel="noopener" href="https://sunkejava.github.io/git-hexo-setuo-error">git多网站ssh部署方案</a></p>
+<h2 id="上传blog到git"><a href="#上传blog到git" class="headerlink" title="上传blog到git"></a>上传blog到git</h2><p>这个操作建议在blog进度最新的PC上进行的，否则后面解决冲突会比较麻烦<br>在osc上添加公钥，建立新respo等过程略过不讲。</p>
+<p>删除文件夹内原有的.git缓存文件夹并编辑.gitignore文件</p>
+<p>有些插件或者主题是git上下过来安装的话，每个文件夹下都会有对应的.git 文件夹，记得先删掉，否则会和blog仓库冲突<br>（.git默认是隐藏文件夹，需要先开启显示隐藏文件夹。<br>.git文件夹被删除后整个文件对应的git仓库状态也会被清空)<br>.gitignore文件作用是声明不被git记录的文件，blog根目录下的.gitignore是hexo初始化带来的，可以先删除或者直接编辑，对hexo不会有影响。建议.gitignore内添加以下内容：</p>
+<pre><code>
+/.deploy_git
+/public
+/_config.yml
+</code></pre>
+
+<p>.deploy_git是hexo默认的.git配置文件夹，不需要同步<br>public内文件是根据source文件夹内容自动生成，不需要备份，不然每次改动内容太多<br>即使是私有仓库，除去在线服务商员工可以看到的风险外，还有云服务商被攻击造成泄漏等可能，所以不建议将配置文件传上去</p>
+<h3 id="初始化仓库"><a href="#初始化仓库" class="headerlink" title="初始化仓库"></a>初始化仓库</h3><p>blog根目录下执行以下代码：</p>
+<pre><code>
+git init
+git remote add origin <server>
+</code></pre>
+<p><server>是指在线仓库的地址。origin是本地分支,remote add操作会将本地仓库映射到云端</p>
+<h3 id="添加本地文件到仓库并同步到git上"><a href="#添加本地文件到仓库并同步到git上" class="headerlink" title="添加本地文件到仓库并同步到git上"></a>添加本地文件到仓库并同步到git上</h3><pre><code>
+git add .  #添加blog目录下所有文件，注意有个.（.gitignore声明过的文件不包含在内)
+git commit -m "first commit" #添加更新说明
+git push -u origin master #推送更新到云端服务器
+</code></pre>
+<p>在执行这步之前一定要注意检查下.gitignore文件的内容，看看是否正确的把一些文件夹忽略掉了。如果加错了的话可以用</p>
+<pre><code>
+git rm -r --cached #撤销添加操作 
+</code></pre>
+
+<p>到这里的时候，云端备份已经完成</p>
+<h2 id="将git的内容同步到本地"><a href="#将git的内容同步到本地" class="headerlink" title="将git的内容同步到本地"></a>将git的内容同步到本地</h2><p>假设之前将A电脑里的内容备份到git了，现在B电脑准备同步内容。</p>
+<pre><code>
+git init
+git remote add origin <server> #将本地文件和云端仓库映射起来
+git fetch --all
+git reset --hard origin/master
+</code></pre>
+
+<p>fetch是将云端所有内容拉取下来。reset则是不做任何合并处理，强制将本地内容指向刚刚同步下来的云端内容（正常pull的话需要考虑不少冲突的问题，比较麻烦。）</p>
+<h2 id="更新文章后的同步操作"><a href="#更新文章后的同步操作" class="headerlink" title="更新文章后的同步操作"></a>更新文章后的同步操作</h2><p>假设在B电脑上写完了文章，也hexo d -g发布完了，这时候需要将新文章的md文件更新上去。（其实就是提交更新给git，会的可以无视了）<br>同一个bash界面下：</p>
+<pre><code>
+git add .
+</code></pre>
+<p>这时候可以用git status查看状态，一般会显示刚刚更改过的文件状态。如：</p>
+<pre><code>
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   db.json
+        new file:   source/_posts/test.md
+</code></pre>
+<p>上面的输出状态即说明’db.json’文件做了更改，source/_posts目录下新增了’test.md’文件。</p>
+<p>然后对更改添加说明并推送到远程仓库.</p>
+<pre><code>
+git commit -m '更新信息'
+git push
+</code></pre>
+
+<p>当显示类似如下提示的时候，即表示备份成功</p>
+<pre><code>
+To git@git.oschina.net:xxxx/blog-backup.git
+ + 2c77e1e...5616bc6 master -> master (forced update)
+</code></pre>
+<p>再到A电脑上的时候，只需要</p>
+<pre><code>
+git pull
+</code></pre>
+<p>即可同步更新</p>
+<h2 id="给git配置sock5代理"><a href="#给git配置sock5代理" class="headerlink" title="给git配置sock5代理"></a>给git配置sock5代理</h2><p>由于某些众所周知的缘故，所以github时不时的有时候速度会很慢，这种情况下本地代理就派上用场了。<br>这里以给git的SSH传输方式配置本地SS代理为例说下配置过程：</p>
+<p>打开~/.ssh/config文件。<br>在Host github *.github.com下添加以下字段：<br>Proxycommand ssh -S 127.0.0.1:1080 %h %p  </p>
+<h4 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h4><p>保存退出后重启git bash。<br>输入ssh -vT <a href="mailto:&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#x6f;&#x6d;">&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#x6f;&#x6d;</a>，当返回Hi username! You’ve successfully authenticated, but GitHub does not provide shell access.的时候即说明配置成功<br>之后github的所有流量都会走本地的ss代理。</p>
+<blockquote>
+<p>有什么留言或问题直接在文末留下评论即可。</p>
+</blockquote>
+<p> 欢迎访客:</p>
+<ul class="ds-recent-visitors" data-num-items="39" data-avatar-size="56"></ul>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/08/10/hexo-sync-in-multiple-pc/">利用git解决hexo博客多PC间同步问题</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2016-08-10, 10:57:47</p>
+        <p><span>Updated:</span>2016-08-10, 11:50:56</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/08/10/hexo-sync-in-multiple-pc/" title="利用git解决hexo博客多PC间同步问题">http://www.sunkejava.com/2016/08/10/hexo-sync-in-multiple-pc/</a>
+            <span class="copy-path" data-clipboard-text="From http://www.sunkejava.com/2016/08/10/hexo-sync-in-multiple-pc/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/08/10/git-hexo-setuo-error/">
+                    hexo博客搭建时遇到的各种坑
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/09/%E5%9B%BE%E7%89%87%E5%8D%9A%E5%AE%A2/">
+                    图片博客
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BE%E5%BA%A6%E4%BA%91%EF%BC%8CDropbox%E7%AD%89%E7%BD%91%E7%9B%98%E4%BA%91%E5%A4%87%E4%BB%BD"><span class="toc-number">1.1.</span> <span class="toc-text">百度云，Dropbox等网盘云备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E7%9A%84git%E6%9C%8D%E5%8A%A1%E5%A4%87%E4%BB%BD"><span class="toc-number">1.2.</span> <span class="toc-text">利用第三方的git服务备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%86%85%E5%A4%96%E7%8E%B0%E5%9C%A8%E7%9F%A5%E5%90%8D%E7%9A%84git%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E5%95%86%E4%B8%BB%E8%A6%81%E6%9C%89%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">国内外现在知名的git服务提供商主要有：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">配置过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0blog%E5%88%B0git"><span class="toc-number">3.</span> <span class="toc-text">上传blog到git</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BB%93%E5%BA%93"><span class="toc-number">3.1.</span> <span class="toc-text">初始化仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%88%B0%E4%BB%93%E5%BA%93%E5%B9%B6%E5%90%8C%E6%AD%A5%E5%88%B0git%E4%B8%8A"><span class="toc-number">3.2.</span> <span class="toc-text">添加本地文件到仓库并同步到git上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86git%E7%9A%84%E5%86%85%E5%AE%B9%E5%90%8C%E6%AD%A5%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-number">4.</span> <span class="toc-text">将git的内容同步到本地</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%96%87%E7%AB%A0%E5%90%8E%E7%9A%84%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">更新文章后的同步操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%99git%E9%85%8D%E7%BD%AEsock5%E4%BB%A3%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">给git配置sock5代理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E8%BF%9E%E6%8E%A5"><span class="toc-number">6.0.1.</span> <span class="toc-text">测试连接</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"利用git解决hexo博客多PC间同步问题　| Sunkejava's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/08/10/hexo-sync-in-multiple-pc/" data-title="利用git解决hexo博客多PC间同步问题" data-url="http://www.sunkejava.com/2016/08/10/hexo-sync-in-multiple-pc/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"sunkejava"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/10/git-hexo-setuo-error/" title="Pre: hexo博客搭建时遇到的各种坑">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/09/%E5%9B%BE%E7%89%87%E5%8D%9A%E5%AE%A2/" title="Next: 图片博客">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/git-hexo-setuo-error/">hexo博客搭建时遇到的各种坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/hexo-sync-in-multiple-pc/">利用git解决hexo博客多PC间同步问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/09/%E5%9B%BE%E7%89%87%E5%8D%9A%E5%AE%A2/">图片博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/first/">基于Hexo+GitHub 搭建博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/FromWebQues/">前端开发面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/06/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/04/windowsxpinstall-net/">Windows XP sp3安装microsoft .net framework 3.5报错</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/gitstudy/">Git初学记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/01/javatom/">tomcat部署Java web项目的几种方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Htm5Cs3/">移动端 h5开发相关内容总结——CSS篇</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2021 sunkejava
+                <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备16050253号-1</a>
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+    
+<script src="/js/GithubRepoWidget.js"></script>
+
+
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 66;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+             github: ".github-widget a", 
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
