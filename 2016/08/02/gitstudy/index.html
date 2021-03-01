@@ -216,7 +216,7 @@
                             
                                 <a class="fa QQ" href="/1577972070" title="QQ"></a>
                             
-                                <a class="fa 微信" href="/meiyou-mianbaode-ai" title="微信"></a>
+                                <a class="fa 微信" href="/sunkeneter" title="微信"></a>
                             
                         </ul>
                     </nav>
@@ -316,7 +316,7 @@
                             
                                 <a class="fa QQ" target="_blank" href="/1577972070" title="QQ"></a>
                             
-                                <a class="fa 微信" target="_blank" href="/meiyou-mianbaode-ai" title="微信"></a>
+                                <a class="fa 微信" target="_blank" href="/sunkeneter" title="微信"></a>
                             
                         </ul>
             </nav>
@@ -527,25 +527,6 @@
 
 
     
-      <div class="duoshuo" id="comments">
-    <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2016/08/02/gitstudy/" data-title="Git初学记录" data-url="http://www.sunkejava.com/2016/08/02/gitstudy/"></div>
-    <script>
-        var duoshuoQuery = {short_name:"sunkejava"};
-        var loadComment = function(){
-            var d = document, s = d.createElement('script');
-            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-            s.async = true; s.charset = 'UTF-8';
-            (d.head || d.body).appendChild(s);
-        }
-
-        
-    </script>
-    
-    <script> loadComment(); </script>
-
-</div>
-    
 
 
 
@@ -587,24 +568,6 @@
                 <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
-        
-            <div class="visit">
-                
-                    <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
-                        </span>
-                    </span>
-                
-                
-                    <span>| </span>
-                
-                
-                    <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
-                        </span>
-                    </span>
-                
-            </div>
         
     </div>
 </footer>
@@ -683,6 +646,23 @@ MathJax.Hub.Queue(function() {
         }
     
 </script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "┗|｀O′|┛ 嗷~~" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "┗|｀O′|┛ 嗷~~" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>

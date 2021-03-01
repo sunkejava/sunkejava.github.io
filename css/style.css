@@ -1506,20 +1506,9 @@ body .ui-tooltip {
 .article-entry li ol {
   margin-left: 30px;
 }
-.article-entry ul > li:before {
-  content: "";
-  background: #dedede;
-}
-.article-entry ul > li:before {
-  display: inline-block;
-  content: "";
-  width: 0.4em;
-  height: 0.4em;
-  margin-right: 0.5em;
-  margin-bottom: 0.11em;
-  border: 1px solid #d3d3d3;
-  border-radius: 50%;
-  background: #d3d3d3;
+.article-entry ul > li {
+  margin-left: 1.1em;
+  list-style-type: disc;
 }
 .article-entry h1,
 .article-entry h2,
@@ -2098,14 +2087,14 @@ aside.comment-bar:active {
 }
 .article-entry pre,
 .article-entry .highlight {
-  background: rgba(249,249,249,0.5);
+  background: rgba(51,51,51,0.85);
   margin: auto;
   padding: 0.35em 1.5em;
   border-style: solid;
   border-color: #ddd;
   border-width: 1px;
   overflow: auto;
-  color: #4d4d4c;
+  color: #ccc;
   line-height: 1.3rem;
 }
 .article-entry .highlight .gutter pre,
@@ -2122,7 +2111,7 @@ aside.comment-bar:active {
   text-shadow: none;
   padding: 0;
   background: none;
-  color: #4d4d4c;
+  color: #ccc;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -2151,7 +2140,7 @@ aside.comment-bar:active {
 }
 .article-entry .highlight figcaption {
   font-size: 0.85em;
-  color: #8e908c;
+  color: #999;
   line-height: 1em;
   margin-bottom: 1em;
 }
@@ -2178,7 +2167,7 @@ aside.comment-bar:active {
   border-style: solid;
   border-color: #ddd;
   border-width: 1px 0;
-  background: rgba(249,249,249,0.5);
+  background: rgba(51,51,51,0.85);
   padding: 15px 20px 15px 0;
 }
 .article-entry .gist .gist-file {
@@ -2204,8 +2193,8 @@ aside.comment-bar:active {
   border: none;
 }
 .article-entry .gist .gist-file .gist-meta {
-  background: rgba(249,249,249,0.5);
-  color: #8e908c;
+  background: rgba(51,51,51,0.85);
+  color: #999;
   font: 0.85em "Lucida Grande", Verdana, "Helvetica Neue", Arial;
   text-shadow: 0 0;
   padding: 0;
@@ -2226,10 +2215,13 @@ aside.comment-bar:active {
   border-radius: 3px;
   -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.08);
   box-shadow: 1px 1px 1px rgba(0,0,0,0.08);
+  var: 1;
+  color: #fff;
+  background: rgba(153,204,153,0.7);
 }
 pre .comment,
 pre .title {
-  color: #8e908c;
+  color: #999;
 }
 pre .variable,
 pre .attribute,
@@ -2243,7 +2235,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #c82829;
+  color: #f2777a;
 }
 pre .number,
 pre .preprocessor,
@@ -2251,12 +2243,12 @@ pre .built_in,
 pre .literal,
 pre .params,
 pre .constant {
-  color: #f5871f;
+  color: #f99157;
 }
 pre .class,
 pre .ruby .class .title,
 pre .css .rules .attribute {
-  color: #718c00;
+  color: #9c9;
 }
 pre .string,
 pre .value,
@@ -2264,10 +2256,10 @@ pre .inheritance,
 pre .header,
 pre .ruby .symbol,
 pre .xml .cdata {
-  color: #718c00;
+  color: #9c9;
 }
 pre .css .hexcolor {
-  color: #3e999f;
+  color: #6cc;
 }
 pre .function,
 pre .python .decorator,
@@ -2277,11 +2269,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #4271ae;
+  color: #69c;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #8959a8;
+  color: #c9c;
 }
 #footer {
   font-size: 0.8rem;

@@ -196,7 +196,7 @@
                             
                                 <a class="fa QQ" href="/1577972070" title="QQ"></a>
                             
-                                <a class="fa 微信" href="/meiyou-mianbaode-ai" title="微信"></a>
+                                <a class="fa 微信" href="/sunkeneter" title="微信"></a>
                             
                         </ul>
                     </nav>
@@ -296,7 +296,7 @@
                             
                                 <a class="fa QQ" target="_blank" href="/1577972070" title="QQ"></a>
                             
-                                <a class="fa 微信" target="_blank" href="/meiyou-mianbaode-ai" title="微信"></a>
+                                <a class="fa 微信" target="_blank" href="/sunkeneter" title="微信"></a>
                             
                         </ul>
             </nav>
@@ -359,7 +359,7 @@
 <p>本博客所有文章的原始 Markdown 文件都备份在 GitHub 上，有需要可以 <a target="_blank" rel="noopener" href="https://github.com/luuman/Hexo" title="Hexo">点此下载</a>。</p>
 </blockquote>
 <h3 id="欢迎交流"><a href="#欢迎交流" class="headerlink" title="欢迎交流:"></a>欢迎交流:</h3><blockquote>
-<p>邮箱：<a href="mailto:&#100;&#101;&#99;&#x6c;&#105;&#110;&#101;&#97;&#98;&#101;&#114;&#x64;&#101;&#101;&#110;&#x40;&#102;&#x6f;&#120;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;">&#100;&#101;&#99;&#x6c;&#105;&#110;&#101;&#97;&#98;&#101;&#114;&#x64;&#101;&#101;&#110;&#x40;&#102;&#x6f;&#120;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;</a></p>
+<p>邮箱：<a href="mailto:&#x64;&#101;&#x63;&#108;&#x69;&#x6e;&#x65;&#x61;&#x62;&#x65;&#x72;&#100;&#101;&#x65;&#x6e;&#x40;&#x66;&#111;&#x78;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;">&#x64;&#101;&#x63;&#108;&#x69;&#x6e;&#x65;&#x61;&#x62;&#x65;&#x72;&#100;&#101;&#x65;&#x6e;&#x40;&#x66;&#111;&#x78;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;</a></p>
 <p>有什么留言或问题直接在文末留下评论即可。</p>
 </blockquote>
 <h3 id="欢迎访客"><a href="#欢迎访客" class="headerlink" title="欢迎访客:"></a>欢迎访客:</h3><ul class="ds-recent-visitors" data-num-items="39" data-avatar-size="56"></ul>
@@ -404,25 +404,6 @@
 
 
     
-      <div class="duoshuo" id="comments">
-    <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="about/index.html" data-title="我的阅历：" data-url="http://www.sunkejava.com/about/index.html"></div>
-    <script>
-        var duoshuoQuery = {short_name:"sunkejava"};
-        var loadComment = function(){
-            var d = document, s = d.createElement('script');
-            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-            s.async = true; s.charset = 'UTF-8';
-            (d.head || d.body).appendChild(s);
-        }
-
-        
-    </script>
-    
-    <script> loadComment(); </script>
-
-</div>
-    
 
 
 
@@ -444,24 +425,6 @@
                 <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
-        
-            <div class="visit">
-                
-                    <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
-                        </span>
-                    </span>
-                
-                
-                    <span>| </span>
-                
-                
-                    <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
-                        </span>
-                    </span>
-                
-            </div>
         
     </div>
 </footer>
@@ -540,6 +503,23 @@ MathJax.Hub.Queue(function() {
         }
     
 </script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "┗|｀O′|┛ 嗷~~" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "┗|｀O′|┛ 嗷~~" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>

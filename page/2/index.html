@@ -199,7 +199,7 @@
                             
                                 <a class="fa QQ" href="/1577972070" title="QQ"></a>
                             
-                                <a class="fa 微信" href="/meiyou-mianbaode-ai" title="微信"></a>
+                                <a class="fa 微信" href="/sunkeneter" title="微信"></a>
                             
                         </ul>
                     </nav>
@@ -299,7 +299,7 @@
                             
                                 <a class="fa QQ" target="_blank" href="/1577972070" title="QQ"></a>
                             
-                                <a class="fa 微信" target="_blank" href="/meiyou-mianbaode-ai" title="微信"></a>
+                                <a class="fa 微信" target="_blank" href="/sunkeneter" title="微信"></a>
                             
                         </ul>
             </nav>
@@ -316,15 +316,6 @@
       <time datetime="2016-08-06T09:43:01.000Z" itemprop="datePublished">2016-08-06</time>
 </a>
 
- 
-    <a href="/2016/08/06/hello-world/#comments" title="Comments">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/08/06/hello-world/" ></span>
-        
-        
-    </a>
 
     </div>
   
@@ -389,15 +380,6 @@
       <time datetime="2016-08-04T13:48:50.000Z" itemprop="datePublished">2016-08-04</time>
 </a>
 
- 
-    <a href="/2016/08/04/windowsxpinstall-net/#comments" title="Comments">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/08/04/windowsxpinstall-net/" ></span>
-        
-        
-    </a>
 
     </div>
   
@@ -466,15 +448,6 @@
       <time datetime="2016-08-02T11:47:23.000Z" itemprop="datePublished">2016-08-02</time>
 </a>
 
- 
-    <a href="/2016/08/02/gitstudy/#comments" title="Comments">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/08/02/gitstudy/" ></span>
-        
-        
-    </a>
 
     </div>
   
@@ -543,15 +516,6 @@
       <time datetime="2016-08-01T07:15:28.000Z" itemprop="datePublished">2016-08-01</time>
 </a>
 
- 
-    <a href="/2016/08/01/javatom/#comments" title="Comments">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/08/01/javatom/" ></span>
-        
-        
-    </a>
 
     </div>
   
@@ -620,15 +584,6 @@
       <time datetime="2016-07-15T10:29:00.000Z" itemprop="datePublished">2016-07-15</time>
 </a>
 
- 
-    <a href="/2016/07/15/Htm5Cs3/#comments" title="Comments">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-            <span class="ds-thread-count"  data-thread-key="2016/07/15/Htm5Cs3/" ></span>
-        
-        
-    </a>
 
     </div>
   
@@ -709,24 +664,6 @@
             </div>
         </div>
         
-            <div class="visit">
-                
-                    <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
-                        </span>
-                    </span>
-                
-                
-                    <span>| </span>
-                
-                
-                    <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
-                        </span>
-                    </span>
-                
-            </div>
-        
     </div>
 </footer>
     </div>
@@ -753,31 +690,6 @@
         })
     </script>
 
-
-    
-        <script>
-            if ($(".left-col").is(":visible")) {
-                var duoshuoQuery = {short_name:"sunkejava"};
-                (function() {
-                    var d = document, s = d.createElement('script');
-                    s.src = 'http://static.duoshuo.com/embed.js';
-                    s.async = true; s.charset = 'UTF-8';
-                    (d.head || d.body).appendChild(s);
-                })();
-
-                $(document).ready(function(){
-                    var $duoshuoCount = $(".ds-thread-count");
-                    $duoshuoCount.bind("DOMNodeInserted", function(e) {
-                        var num = $(this).text().replace(/[^0-9]/ig,"");
-                        $(this).siblings(".count-comment").text(num);
-                        $(this).remove();
-                    })
-                })
-            }
-        </script>
-    
-
-     
 
 
 
@@ -829,6 +741,23 @@ MathJax.Hub.Queue(function() {
         }
     
 </script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "┗|｀O′|┛ 嗷~~" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "┗|｀O′|┛ 嗷~~" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
 
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
