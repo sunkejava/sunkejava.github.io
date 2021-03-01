@@ -425,7 +425,7 @@ git pull
 <p>即可同步更新</p>
 <h2 id="给git配置sock5代理"><a href="#给git配置sock5代理" class="headerlink" title="给git配置sock5代理"></a>给git配置sock5代理</h2><p>由于某些众所周知的缘故，所以github时不时的有时候速度会很慢，这种情况下本地代理就派上用场了。<br>这里以给git的SSH传输方式配置本地SS代理为例说下配置过程：</p>
 <p>打开~/.ssh/config文件。<br>在Host github *.github.com下添加以下字段：<br>Proxycommand ssh -S 127.0.0.1:1080 %h %p  </p>
-<h4 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h4><p>保存退出后重启git bash。<br>输入ssh -vT <a href="mailto:&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#x6f;&#x6d;">&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#x6f;&#x6d;</a>，当返回Hi username! You’ve successfully authenticated, but GitHub does not provide shell access.的时候即说明配置成功<br>之后github的所有流量都会走本地的ss代理。</p>
+<h4 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h4><p>保存退出后重启git bash。<br>输入ssh -vT <a href="mailto:&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#x68;&#x75;&#98;&#46;&#99;&#x6f;&#109;">&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#x68;&#x75;&#98;&#46;&#99;&#x6f;&#109;</a>，当返回Hi username! You’ve successfully authenticated, but GitHub does not provide shell access.的时候即说明配置成功<br>之后github的所有流量都会走本地的ss代理。</p>
 <blockquote>
 <p>有什么留言或问题直接在文末留下评论即可。</p>
 </blockquote>
