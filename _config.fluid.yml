@@ -1,0 +1,38 @@
+favicon: /favicon.png
+apple_touch_icon: /apple-touch-icon.png
+navbar:
+  blog_title: Sunkejava's Blog
+  menu:
+    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
+    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    - { key: "项目", link: "/projects/", icon: "iconfont icon-link-fill" }
+    - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
+index:
+  slogan:
+    enable: true
+    text: 代码连接系统，工程保证系统持续运行
+  post_meta:
+    date: true
+    category: true
+    tag: false
+post:
+  toc:
+    enable: true
+    headingSelector: "h1,h2,h3,h4"
+  updated:
+    enable: true
+  prev_next:
+    enable: true
+footer:
+  content: '© 2016–2026 Sunke · Built with <a href="https://hexo.io" target="_blank">Hexo</a>'
+search:
+  enable: true
+  path: /local-search.xml
+dark_mode:
+  enable: true
+  default: auto
+web_analytics:
+  enable: false
+
