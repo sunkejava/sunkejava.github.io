@@ -1,5 +1,5 @@
-favicon: /favicon.png
-apple_touch_icon: /apple-touch-icon.png
+favicon: /img/fluid.png
+apple_touch_icon: /img/fluid.png
 navbar:
   blog_title: Sunkejava's Blog
   menu:
@@ -35,4 +35,3 @@ dark_mode:
   default: auto
 web_analytics:
   enable: false
-
