@@ -25,6 +25,8 @@ npm run server
 npm run build
 ```
 
+提交前可运行 `npm run check`，它会清理缓存并完整生成站点，用于发现文章 Front Matter、主题配置或生成器错误。
+
 ## 发布文章
 
 在 `source/_posts/` 新建 Markdown 文件，至少包含：
